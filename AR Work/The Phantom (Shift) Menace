@@ -1,0 +1,32 @@
+select eventscontactsstatuses.datecreated::date, count(*)
+from c2014_ar_coord_vansync.eventscontactsstatuses
+where datecreated>='2014-10-6'
+group by 1
+;
+
+select *
+from c2014_ar_coord_vansync.eventscontactsstatuses ecs
+full outer join c2014_ar_coord_vansync.eventscontacts ec using(eventsignupid,state)
+--where datecreated>='2014-10-6'
+--and vanid=100011327
+--and 
+where eventsignupid in (70229,70228,70230)
+;
+select ea.region, ea.fo, ea.eventtype, ea.eventdate, en./*eventcalendarname */eventname, ea.currentstatus, ea.vanid, p.firstname||' '||p.lastname name, ea.eventsignupid
+from eventattendees ea
+left join (select eventid, /*eventcalendarname */eventname from c2014_ar_coord_vansync.events) en using(eventid)
+left join (Select vanid, firstname, lastname from c2014_ar_coord_vansync.mycampaignperson) p using(vanid)
+where ea.eventdate='2014-10-10'
+and finalsitch=6
+order by 1,2,4,3 asc
+;
+
+
+select * from eventattendees
+where vanid=100011327
+;
+select * from c2014_ar_coord_vansync.eventscontactsstatuses ecs
+full outer join c2014_ar_coord_vansync.eventscontacts ec using(eventsignupid,state)
+where ec.datesuppressed is not null
+and ec.datetimeoffsetbegin>='2014-10-01'
+;
